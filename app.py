@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify,render_template
 import json
 
 # Chargement modèle
-model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model\\model\\best_model.pkl','rb'))
+model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\best_model.pkl','rb'))
 
 # Chargement data
 def loading_csv_data(path):
@@ -16,7 +16,7 @@ def loading_csv_data(path):
     df = pd.read_csv(path)
     df.drop("Unnamed: 0", axis = 1, inplace = True)
     return df
-data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model\data\df_test.csv")
+data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\df_test.csv")
 
 # Création de l'application
 app = Flask(__name__)

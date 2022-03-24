@@ -56,10 +56,10 @@ def defining_group(df):
         return "monitor"
 
 # Dataset
-data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model\data\df_test.csv") # Dataset
+data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\df_test.csv") # Dataset
 
 # Meilleur modèle ML
-loaded_model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model\\model\\model.pkl','rb')) # Modèle ML
+loaded_model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\model.pkl','rb')) # Modèle ML
 
 # Prédiction
 predicted_data = loading_predicted_data(data,'applicant_loan_id')
@@ -138,7 +138,7 @@ if page == 'Introduction':
     st.text("")
     st.text("")
 
-    logo = Image.open(r'C:\Users\pauline_castoriadis\Documents\implement_scoring_model\images\logo.jpg')
+    logo = Image.open(r'C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\images\logo.jpg')
     
     copyright_1,copyright_2 = st.columns(2)
 
@@ -411,7 +411,7 @@ elif page == 'Rapport client':
         df = pd.read_excel(path)
         return df
     
-    report_data = loading_excel_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model\data\reports.xlsx")
+    report_data = loading_excel_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\reports.xlsx")
     
     form = st.form(key="annotation")
     
