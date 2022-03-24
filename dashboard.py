@@ -11,6 +11,8 @@ import pickle
 from PIL import Image
 import plotly.express as px
 import plotly.graph_objects as go
+import streamlit.components.v1 as components
+import shap
 from flask import Flask
 import requests
 from urllib.error import URLError
@@ -57,7 +59,7 @@ def defining_group(df):
 data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model\data\df_test.csv") # Dataset
 
 # Meilleur modèle ML
-loaded_model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model\\model\\best_model.pkl','rb')) # Modèle ML
+loaded_model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model\\model\\model.pkl','rb')) # Modèle ML
 
 # Prédiction
 predicted_data = loading_predicted_data(data,'applicant_loan_id')
@@ -69,18 +71,15 @@ predicted_data['group'] = predicted_data.apply(defining_group, axis = 1)
 applicant_id_list = data['applicant_loan_id'].tolist()
 
 # Choix id client
-st.sidebar.write("# Choix d´un identifiant client")
-st.sidebar.info('**Veuillez sélectionner un identifiant \
-    client dans le menu déroulant.**')
-
-selected_id = st.sidebar.selectbox( 
-        "", applicant_id_list,index=1)
-st.sidebar.write("# Client id:  ", selected_id)
+st.sidebar.write("# Choix du client")
+selected_id = st.sidebar.selectbox("", applicant_id_list,index = 1)
+st.sidebar.write("# ID sélectionné:  ", selected_id)
 
 # Données relatives au client sélectionné
 id_data = predicted_data[predicted_data['applicant_loan_id'] == int(selected_id)] # Données
 prediction_id = round(id_data['prediction'].iat[0,],2) # Prédiction
 group_id = id_data['group'].iat[0,] # Groupe
+
 
 #------------- Formatting des titres et définition des pages dashboard utilisables -------------
 
@@ -101,13 +100,18 @@ def formatting_title_5(title):
     return st.markdown(f"<h1 style='text-align:left; color: white;font-size:15px'>{title}</h1>", unsafe_allow_html = True)
     
 # Définition des différentes pages de notre dashboard    
+
+st.sidebar.write("# Choix de la page")
+
 page = st.sidebar.selectbox('Sélectionner la page correspondante',
   ['Introduction','Prédiction score','Analyse client','Rapport client'])
+
+st.sidebar.info('**Si vous constatez un bug ou avez un besoin spécifique, contactez-vous!**')
+
 
 #------------- Page 1 de notre dashboard : introduction du problème -------------
 
 if page == 'Introduction':
-
 
     # Introduction sur les objectifs du dashboard
 
@@ -125,7 +129,6 @@ if page == 'Introduction':
     titre2 = 'Visualiser des informations relatives à un client'
     titre3 = 'Comparer les informations relatives à un client à un groupe de client similaire'
     formatting_title_3(titre1,titre2,titre3)
-    
 
     # Copyright & marque
 
@@ -154,7 +157,6 @@ elif page == 'Prédiction score':
     formatting_title_1('Dashboard interactif à destination des gestionnaires de la relation client ')
 
     st.markdown("<hr/>",unsafe_allow_html = True)
-
 
     # Calcul & affichage de la probabilité de faire défaut
    
@@ -323,6 +325,15 @@ elif page == 'Analyse client':
     # Affichage des variables les plus importantes pour le client sélectionné
     
     formatting_title_2('Comprenez les variables les plus importantes pour la prédiction du client sélectionné')
+    
+    def st_shap(plot, height=None):
+        shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+        components.html(shap_html, height=height)
+    
+    X = id_data.iloc[:, : 26]
+    explainer = shap.TreeExplainer(loaded_model)
+    shap_values = explainer.shap_values(X)
+    st_shap(shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
     
     st.markdown("<hr/>",unsafe_allow_html = True)
     
