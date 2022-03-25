@@ -1,0 +1,10 @@
+
+pandas
+pickle
+numpy
+flask
+Flask
+request
+jsonify
+render_template
+json

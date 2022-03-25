@@ -1,12 +1,20 @@
-# Import des packages
+# Import des packages nécessaires
+import pandas as pd
 import pickle
 import numpy as np
-import pandas as pd
 from flask import Flask, request, jsonify,render_template
 import json
 
-# Chargement modèle
-model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\best_model.pkl','rb'))
+# Création de l'app
+app = Flask(__name__)
+
+# Petit test Hello World
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+# Sauvegarde du modèle
+model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\model.pkl','rb'))
 
 # Chargement data
 def loading_csv_data(path):
@@ -16,36 +24,20 @@ def loading_csv_data(path):
     df = pd.read_csv(path)
     df.drop("Unnamed: 0", axis = 1, inplace = True)
     return df
+
+# chargement des donnees
 data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\df_test.csv")
 
-# Création de l'application
-app = Flask(__name__)
-app.config["DEBUG"] = True
-
-# Création de l'URL d'entrée
-@app.route('/', methods = ['GET'])
-def home():
-    return render_template('index.html')
-
-# URL Predict lorsque l'employé a rentré l'ID client
-@app.route('/predict',methods = ['POST'])
-def predict():
-    # Prédiction
-    id_client = [int(x) for x in request.form.values()]
-    features = np.array(data[data['applicant_loan_id'] == id_client[0]].drop(['applicant_loan_id'],axis = 1))
+# calcul du score et envoi d'un dico avec les infos id clients et prédiction
+@app.route('/api/<int:applicant_loan_id>')
+def mon_api(applicant_loan_id):
+    features = np.array(data.drop(['applicant_loan_id'],axis = 1))
+    val = model.predict_proba(features)
     prediction = model.predict_proba(features)[:,1]
     output = round(prediction[0]*100,2)
-    dico = {'id':id_client,
+    dico = {'id': applicant_loan_id,
             'prediction':output}
     return jsonify(dico)
-    
-    # Lien avec HTML
-    #if output <= 50:
-        #return render_template('index.html', prediction_text = '{} chances de ne pas rembourser son prêt : le dossier du client pourra être ré-étudié'.format(output))
-    #elif output >= 75:
-        #return render_template('index.html', prediction_text = '{} chances de ne pas rembourser son prêt : le dossier doit être refusé'.format(output))
-    #else:
-        #return render_template('index.html', prediction_text = '{} chances de ne pas rembourser son prêt : le dossier doit être mis sous surveillance'.format(output))
 
-if __name__ == '__main__' :
-    app.run()
+if __name__ == "__main__":
+    app.run(debug = True)
