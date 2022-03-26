@@ -16,6 +16,8 @@ import shap
 from flask import Flask
 import requests
 from urllib.error import URLError
+from urllib.request import urlopen
+import json
 
 # Configuration largeur dashboard
 st.set_page_config(layout = "wide")
@@ -75,9 +77,13 @@ st.sidebar.write("# Choix du client")
 selected_id = st.sidebar.selectbox("", applicant_id_list,index = 1)
 st.sidebar.write("# ID sélectionné:  ", selected_id)
 
-# Données relatives au client sélectionné
+# Données relatives au client sélectionné à partir de l'api correspondante
 id_data = predicted_data[predicted_data['applicant_loan_id'] == int(selected_id)] # Données
-prediction_id = round(id_data['prediction'].iat[0,],2) # Prédiction
+id = str(selected_id)
+url = "http://127.0.0.1:5000/api/%s" % id
+response = urlopen(url)
+data_json = json.loads(response.read())
+prediction_id = float(data_json["prediction"])# Prédiction
 group_id = id_data['group'].iat[0,] # Groupe
 
 
