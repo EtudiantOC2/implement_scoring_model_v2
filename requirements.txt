@@ -3,8 +3,4 @@ pandas==1.3.3
 pickle==4.0
 numpy==1.19.5
 Flask==1.1.2
-flask
-request
-jsonify
-render_template
-json
+request==2.26.0

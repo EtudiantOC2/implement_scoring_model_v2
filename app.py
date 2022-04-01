@@ -3,7 +3,6 @@ import pandas as pd
 import pickle
 import numpy as np
 from flask import Flask, request, jsonify,render_template
-import json
 
 # Création de l'app
 app = Flask(__name__)
