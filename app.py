@@ -1,7 +1,6 @@
 # Import des packages nécessaires
 import pandas as pd
 import pickle
-import numpy as np
 from flask import Flask, request, jsonify,render_template
 
 # Création de l'app
