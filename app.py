@@ -30,7 +30,7 @@ def loading_csv_data(path):
     return df
 
 # chargement des donnees
-data = pickle.load(open(DATA_PATH / 'df_test'))
+data = loading_csv_data(open(DATA_PATH / 'df_test.csv'))
 
 # Chargement prédiction
 def loading_predicted_data(df,id_col):
