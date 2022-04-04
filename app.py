@@ -3,6 +3,12 @@ import pandas as pd
 import pickle
 from flask import Flask, request, jsonify,render_template
 
+from pathlib import Path
+import os
+ROOT_PATH = Path(os.getenv("ROOT_PATH", "."))
+DATA_PATH = ROOT_PATH / "data"
+MODEL_PATH = ROOT_PATH / "model"
+
 # Création de l'app
 app = Flask(__name__)
 
@@ -12,7 +18,7 @@ def hello():
     return "Hello World!"
 
 # Sauvegarde du modèle
-model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\model.pkl','rb'))
+model = pickle.load(open(MODEL_PATH / 'model.pkl','rb'))
 
 # Chargement data
 def loading_csv_data(path):
@@ -24,7 +30,7 @@ def loading_csv_data(path):
     return df
 
 # chargement des donnees
-data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\df_test.csv")
+data = pickle.load(open(DATA_PATH / 'df_test'))
 
 # Chargement prédiction
 def loading_predicted_data(df,id_col):
