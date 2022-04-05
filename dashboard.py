@@ -18,6 +18,14 @@ from urllib.error import URLError
 from urllib.request import urlopen
 import json
 
+from pathlib import Path
+import os
+ROOT_PATH = Path(os.getenv("ROOT_PATH", "."))
+DATA_PATH = ROOT_PATH / "data"
+MODEL_PATH = ROOT_PATH / "model"
+
+API_URL = os.getenv("API_URL", "http://localhost:8000")
+
 # Configuration largeur dashboard
 st.set_page_config(layout = "wide")
 
@@ -57,10 +65,10 @@ def defining_group(df):
         return "monitor"
 
 # Dataset
-data = loading_csv_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\df_test.csv") # Dataset
+data = loading_csv_data(DATA_PATH / "df_test.csv") # Dataset
 
 # Meilleur modèle ML
-loaded_model = pickle.load(open('C:\\Users\\pauline_castoriadis\\Documents\\implement_scoring_model_v2\\model\\model.pkl','rb')) # Modèle ML
+loaded_model = pickle.load(open(MODEL_PATH/'model.pkl','rb')) # Modèle ML
 
 # Prédiction
 predicted_data = loading_predicted_data(data,'applicant_loan_id')
@@ -79,7 +87,7 @@ st.sidebar.write("# ID sélectionné:  ", selected_id)
 # Données relatives au client sélectionné à partir de l'api correspondante
 id_data = predicted_data[predicted_data['applicant_loan_id'] == int(selected_id)] # Données
 id = str(selected_id)
-url = "http://127.0.0.1:5000/api/%s" % id
+url = "%s/api/%s" % (API_URL,id)
 response = urlopen(url)
 data_json = json.loads(response.read())
 prediction_id = float(data_json["prediction"])# Prédiction
@@ -143,7 +151,7 @@ if page == 'Introduction':
     st.text("")
     st.text("")
 
-    logo = Image.open(r'C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\images\logo.jpg')
+    logo = Image.open(ROOT_PATH / 'images'/'logo.jpg')
     
     copyright_1,copyright_2 = st.columns(2)
 
@@ -416,7 +424,7 @@ elif page == 'Rapport client':
         df = pd.read_excel(path)
         return df
     
-    report_data = loading_excel_data(r"C:\Users\pauline_castoriadis\Documents\implement_scoring_model_v2\data\reports.xlsx")
+    report_data = loading_excel_data(DATA_PATH/"reports.xlsx")
     
     form = st.form(key="annotation")
     
