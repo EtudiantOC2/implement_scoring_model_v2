@@ -14,7 +14,7 @@ EOF
 
   cat > ~/.streamlit/credentials.toml <<EOF
 [general]
-email = "christophe.haug@m4x.org"
+email = "paulinegleiron@gmail.com"
 EOF
   streamlit run dashboard.py
 fi
