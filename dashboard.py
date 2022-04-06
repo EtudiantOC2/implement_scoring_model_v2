@@ -346,7 +346,7 @@ elif page == 'Analyse client':
     X = id_data.iloc[:, : 26]
     explainer = shap.TreeExplainer(loaded_model)
     shap_values = explainer.shap_values(X)
-    st_shap(shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
+    # st_shap(shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
     
     st.markdown("<hr/>",unsafe_allow_html = True)
     
