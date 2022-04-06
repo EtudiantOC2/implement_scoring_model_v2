@@ -10,6 +10,8 @@ else
 headless = true
 port = ${PORT:-8042}
 enableCORS = true
+[theme]
+base = "dark"
 EOF
 
   cat > ~/.streamlit/credentials.toml <<EOF
