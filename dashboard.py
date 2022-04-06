@@ -417,14 +417,14 @@ elif page == 'Rapport client':
 
     formatting_title_2('Rédigez un rapport pour le client dont vous venez de regarder le dossier')
     
-    def loading_excel_data(path):
+    def loading_csv_data(path):
         '''
         Retourne le dataframe à partir du chemin qu'on lui désigne
         '''
-        df = pd.read_excel(path)
+        df = pd.read_csv(path)
         return df
     
-    report_data = loading_excel_data(DATA_PATH/"reports.xlsx")
+    report_data = loading_csv_data(DATA_PATH/"reports.csv")
     
     form = st.form(key="annotation")
     
