@@ -151,7 +151,7 @@ if page == 'Introduction':
     st.text("")
     st.text("")
 
-    logo = Image.open(ROOT_PATH / 'images'/'logo.jpg')
+    logo = Image.open(ROOT_PATH / 'images'/'logo.JPG')
     
     copyright_1,copyright_2 = st.columns(2)
 
