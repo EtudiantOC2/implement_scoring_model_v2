@@ -24,7 +24,7 @@ ROOT_PATH = Path(os.getenv("ROOT_PATH", "."))
 DATA_PATH = ROOT_PATH / "data"
 MODEL_PATH = ROOT_PATH / "model"
 
-API_URL = os.getenv("API_URL", "http://localhost:8000")
+API_URL = os.getenv("API_URL", "https://prediction-client-api.herokuapp.com")
 
 # Configuration largeur dashboard
 st.set_page_config(layout = "wide")
@@ -346,7 +346,7 @@ elif page == 'Analyse client':
     X = id_data.iloc[:, : 26]
     explainer = shap.TreeExplainer(loaded_model)
     shap_values = explainer.shap_values(X)
-    # st_shap(shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
+    st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], X.iloc[0,:]))
     
     st.markdown("<hr/>",unsafe_allow_html = True)
     
@@ -428,7 +428,7 @@ elif page == 'Rapport client':
     
     form = st.form(key="annotation")
     
-    with form: # Formulaire à remplur
+    with form: # Formulaire à remplir
         cols = st.columns((1, 1))
         author = cols[0].text_input("Nom du conseiller :")
         report_type = cols[1].selectbox(
