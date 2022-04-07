@@ -119,7 +119,7 @@ st.sidebar.write("# Choix de la page")
 page = st.sidebar.selectbox('Sélectionner la page correspondante',
   ['Introduction','Prédiction score','Analyse client','Rapport client'])
 
-st.sidebar.info('**Si vous constatez un bug ou avez un besoin spécifique, contactez-vous!**')
+st.sidebar.info('**Si vous constatez un bug ou avez un besoin spécifique, contactez-nous!**')
 
 
 #------------- Page 1 de notre dashboard : introduction du problème -------------
@@ -346,7 +346,7 @@ elif page == 'Analyse client':
     X = id_data.iloc[:, : 26]
     explainer = shap.TreeExplainer(loaded_model)
     shap_values = explainer.shap_values(X)
-    st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], X.iloc[0,:]))
+    #st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], X.iloc[0,:]))
     
     st.markdown("<hr/>",unsafe_allow_html = True)
     
