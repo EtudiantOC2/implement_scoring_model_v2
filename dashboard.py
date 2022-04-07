@@ -337,7 +337,7 @@ elif page == 'Analyse client':
 
     # Affichage des variables les plus importantes pour le client sélectionné
     
-    formatting_title_2('Comprenez les variables les plus importantes pour la prédiction du client sélectionné')
+    # formatting_title_2('Comprenez les variables les plus importantes pour la prédiction du client sélectionné')
     
     def st_shap(plot, height=None):
         shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
@@ -348,7 +348,7 @@ elif page == 'Analyse client':
     shap_values = explainer.shap_values(X)
     #st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], X.iloc[0,:]))
     
-    st.markdown("<hr/>",unsafe_allow_html = True)
+    # st.markdown("<hr/>",unsafe_allow_html = True)
     
     formatting_title_2('Comparez les indicateurs de votre client aux autres groupes')
 
